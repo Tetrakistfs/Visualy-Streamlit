@@ -3,50 +3,100 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+import altair as alt
+import plotly.express as px
 
 
-def visualize(df, x_axis, y_axis, plot_type, plot_size, plot_label_size):
+def visualize(df, x_axis, y_axes, plot_type, plot_size):
     columns = df.columns.tolist()
     # Allow the user to select columns for plotting
 
     # Set plot size based on user selection
     if plot_size == "Small":
-        plot_width = 4
-        plot_height = 3
+        plot_width = 600
+        plot_height = 400
     elif plot_size == "Medium":
-        plot_width = 6
-        plot_height = 4
+        plot_width = 800
+        plot_height = 600
     elif plot_size == "Large":
-        plot_width = 8
-        plot_height = 6
+        plot_width = 800
+        plot_height = 800
 
-    # Generate the plot based on user selection
-    fig, ax = plt.subplots(figsize=(plot_width, plot_height))
-
-    if plot_type == "Line Plot":
-        sns.lineplot(x=df[x_axis], y=df[y_axis], ax=ax)
+    if plot_type == "Area Plot":
+        st.area_chart(
+            data=df,
+            x=x_axis,
+            y=y_axes,
+            width=plot_width,
+            height=plot_height,
+            use_container_width=False,
+        )
     elif plot_type == "Bar Chart":
-        sns.barplot(x=df[x_axis], y=df[y_axis], ax=ax)
+        st.bar_chart(
+            data=df,
+            x=x_axis,
+            y=y_axes,
+            width=plot_width,
+            height=plot_height,
+            use_container_width=False,
+        )
+    elif plot_type == "Line Plot":
+        st.line_chart(
+            data=df,
+            x=x_axis,
+            y=y_axes,
+            width=plot_width,
+            height=plot_height,
+            use_container_width=False,
+        )
+    elif plot_type == "Map Plot":
+        st.map(
+            data=df,
+            latitude=x_axis,
+            longitude=y_axes,
+            zoom=None,
+            use_container_width=False,
+        )
     elif plot_type == "Scatter Plot":
-        sns.scatterplot(x=df[x_axis], y=df[y_axis], ax=ax)
-    elif plot_type == "Distribution Plot":
-        sns.histplot(df[x_axis], kde=True, ax=ax)
-        y_axis = "Density"
-    elif plot_type == "Count Plot":
-        sns.countplot(x=df[x_axis], ax=ax)
-        y_axis = "Count"
+        st.scatter_chart(
+            data=df,
+            x=x_axis,
+            y=y_axes,
+            width=plot_width,
+            height=plot_height,
+            use_container_width=False,
+        )
+    elif plot_type == "Histogram":
+        fig = px.histogram(
+            data_frame=df, x=x_axis, y=y_axes, width=plot_width, height=plot_height
+        )
+        st.plotly_chart(
+            fig, use_container_width=False, sharing="streamlit", theme="streamlit"
+        )
+    elif plot_type == "Density Heatmaps":
+        fig = px.density_heatmap(
+            data_frame=df, x=x_axis, y=y_axes, width=plot_width, height=plot_height
+        )
+        st.plotly_chart(
+            fig, use_container_width=False, sharing="streamlit", theme="streamlit"
+        )
+    elif plot_type == "Heatmaps":
+        fig = px.imshow(df, x=x_axis, y=y_axes, width=plot_width, height=plot_height)
+        st.plotly_chart(
+            fig, use_container_width=False, sharing="streamlit", theme="streamlit"
+        )
 
-    # Adjust label sizes
-    ax.tick_params(axis="x", labelsize=plot_label_size)  # Adjust x-axis label size
-    ax.tick_params(axis="y", labelsize=plot_label_size)  # Adjust y-axis label size
-
-    # Adjust title and axis labels with a smaller font size
-    plt.title(f"{plot_type} of {y_axis} vs {x_axis}", fontsize=10)
-    plt.xlabel(x_axis, fontsize=plot_label_size)
-    plt.ylabel(y_axis, fontsize=plot_label_size)
-
-    # Show the results
-    return fig
+    elif plot_type == "Pie Chart":
+        fig = px.pie(
+            data_frame=df,
+            names=x_axis,
+            labels=y_axes,
+            height=plot_height,
+            width=plot_width,
+        )
+        st.plotly_chart(
+            fig, use_container_width=False, sharing="streamlit", theme="streamlit"
+        )
 
 
 # Matplotlib:

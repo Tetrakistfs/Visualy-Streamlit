@@ -1,12 +1,6 @@
 import os
 import streamlit as st
 import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
-import pygwalker as pyg
-from plotOptions import plot
-from editor import pygWalker
-from streamlit import session_state
 from fileOptions import visualizationOptions
 
 
@@ -18,10 +12,6 @@ def read_file(file_path, selected_file):
         return pd.read_csv(file_path)
     else:
         return pd.read_excel(file_path)
-
-
-# def showVisualizationOptions():
-#     st.session_state.showOptions = True
 
 
 def fileUploader():
@@ -41,14 +31,7 @@ def fileUploader():
         # Construct the full path to the file
         file_path = os.path.join(folder_path, selected_file)
         df = read_file(file_path, selected_file)
-
+        df = pd.DataFrame(df)
+        df.reset_index(drop=True, inplace=True)
+        df = df.replace("", pd.NA).fillna(0)
         visualizationOptions(df)
-
-        ###### myabe i can use this later ######
-        # if "showOptions" not in st.session_state:
-        #     st.session_state.showOptions = False
-
-        # st.button("Select File", on_click=showVisualizationOptions)
-
-        # if st.session_state.showOptions:
-        #     visualizationOptions(df)
