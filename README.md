@@ -12,7 +12,18 @@ To run the application go into the folder in which main.py is located as run the
 
 The application will launch on a browser with your machine as the local server.
 
+The Application looks like the images porvided below:
+
+![Alt text](screenshots\Screenshot 2024-05-28 164505.png)
+![Alt text](screenshots\Screenshot 2024-05-28 164627.png)
+![Alt text](screenshots\Screenshot 2024-05-28 164738.png)
+![Alt text](screenshots\Screenshot 2024-05-28 165022.png)
+![Alt text](screenshots\Screenshot 2024-05-28 165208.png)
+
 # Current Bugs:
+
+The save system does not work in advanced chart editor.
+The cache needs to be improved to further lovwer the runtime of the application.
 
 The Dataframe Editor loose the data upon changing different components
 
